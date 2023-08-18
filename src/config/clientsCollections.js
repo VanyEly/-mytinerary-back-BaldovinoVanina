@@ -1,16 +1,16 @@
-requir("./db")
-const Client = require("../models/Client")
+//require("./db")
+//const Client = require("../models/City")
 
-const clients = [
-    {
-       name: "john",
-       lastName: "Johnson",
-       age: "16"
-    },
-    {
-     name: "Peter",
-     lastName: "Johnson",
-     age: "18"
-  }        
- ]
+//const city = [
+  //  {
+    //   name: "john",
+      // lastName: "Johnson",
+      // age: "16"
+    //},
+    //{
+    // name: "Peter",
+    // lastName: "Johnson",
+    // age: "18"
+ // }        
+ //]
 

@@ -1,6 +1,10 @@
-const { connect } = require('mongoose');
+const { connect } = require('mongoose')
+require('dotenv').config({path:'./.env'})
 
-const URI ="mongodb+srv://vanyely:SIbkYM69pfwZw9ag@cluster0.tzjqgux.mongodb.net/?retryWrites=true&w=majority"
+
+const URI = process.env.MONGO_URI
+
+
 
 
 connect(URI)
