@@ -4,9 +4,10 @@ const getCities = async (req, res) => {
 
 
    try {
+     // console.log("ejecute la linea city");
         let cities = await   City.find()     
          res.status(200).json(
-          cities
+          {cities}
          )
    } catch (error) {
       res.status(500).json({message: "the cities could not be found"})
