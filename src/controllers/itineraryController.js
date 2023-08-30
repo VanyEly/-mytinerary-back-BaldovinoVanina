@@ -1,152 +1,97 @@
 const Itinerary = require("../models/Itinerary");
 
-const itinerariesControllers = {
-  obtenerTodosIt: async (req, res) => {
-    let itinerario;
-    let error = null;
 
-    try {
-      itinerario = await Itinerary.find().populate("ciudadRelacionada");
-    } catch (err) {
-      error = err;
-    }
+ 
+const getItineraries = async (req, res) => {
 
-    res.json({
-      respuesta: error ? "ERROR" : itinerary,
-      success: error ? false : true,
-      error: error,
-    });
-  },
-  agregarItinerario: (req, res) => {
-    const {
-      name,
-      nameImg,
-      price,
-      duration,
-      likes,
-      hashtags,
-      ciudadRelacionada,
-    } = req.body;
-    console.log(req.body);
-    let { _id: id, primerName: names, fotoPerfil: namesImg } = req.user;
-    if (req.user.rol === "guia") {
-      new Itinerary({
-        names,
-        namesImg,
-        price,
-        duration,
-        likes,
-        hashtags,
-        ciudadRelacionada,
-        idGuia: id,
-      })
-        .save()
-        .then((response) => res.json({ response }))
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      // Nunca debería llegar a este else, si llega aca revisar las condiciones del front
-      res.json({
-        success: false,
-        error: [
-          { message: "Esta funcion solo esta disponible para los guias" },
-        ],
-      });
-    }
-  },
-  obtenerUnIt: async (req, res) => {
-    let itinerario;
-    const id = req.params.id;
 
-    try {
-      itinerario = await Itinerary.findOne({ _id: id }).populate(
-        "ciudadRelacionada"
-      );
-    } catch (err) {
-      console.log(err);
-    }
+  try {
+    // console.log("ejecute la linea city");
+       let itineraries = await   Itinerary.find()     
+        res.status(200).json(
+         {itineraries}
+        )
+  } catch (error) {
+     res.status(500).json({message: "the itineraries could not be found"})
+  }
 
-    res.json({ respuesta: itinerario, success: true });
-  },
+  }
 
-  borrarItinerario: async (req, res) => {
-    const id = req.params.id;
-    let { _id: guia } = req.user;
-    if (req.user.rol === "guia") {
-      try {
-        const itinerarioABorrar = await Itinerary.findOne({ _id: id });
-        if (itinerarioABorrar.idGuia) {
-          const borrado = await Itinerary.findOneAndDelete({ idGuia: guia });
-          if (borrado) {
-            res.json({
-              respuesta: {
-                itenerarioABorrar: itinerarioABorrar,
-                borrado: borrado,
-              },
-              success: true,
-            });
-          } else {
-            res.json({
-              respuesta: [{ message: "solo podes borrar tus itinerarios" }],
-              success: true,
-            });
-          }
-        } else {
-          res.json({
-            respuesta: [{ message: "solo podes borrar tus itinerarios" }],
-            success: true,
-          });
-        }
-      } catch (err) {
-        res.json({ respuesta: { err }, success: false });
-      }
-    }
-  },
+const getItinerary = async (req, res) => {
 
-  modificarItinerario: async (req, res) => {
-    console.log("Llegue al controller");
-    let id = req.params.id;
-    let itinerario = req.body;
-    let { _id: guia } = req.user;
-    try {
-      const itinerarioAActualizar = await Itinerary.findOne({ _id: id });
+const {id} = req.params
+try {
+  let  {id} = req.params
 
-      if (itinerarioAActualizar.idGuia) {
-        console.log("entre al if");
-        console.log(itinerario.body);
-        const actualizacion = await Itinerary.findOneAndUpdate(
-          { idGuia: guia },
-          itinerario.body,
-          { new: true }
-        );
-        if (actualizacion) {
-          res.json({ success: true, response: actualizacion, error: null });
-        } else {
-          res.json({
-            respuesta: [{ message: "solo podes modificar tus itinerarios" }],
-            success: true,
-            error: true,
-          });
-        }
-      }
-    } catch (err) {
-      res.json({
-        respuesta: [{ message: "Cayo en el catch del controller" }],
-        success: false,
-        error: true,
-      });
-    }
-  },
-  obtenerItinerariosPorCiudad: async (req, res) => {
-    try {
-      const itinerariosDeCiudad = await Itinerary.find({
-        ciudadRelacionada: req.params.idCiudad,
-      });
-      res.json({ respuesta: itinerariosDeCiudad });
-    } catch (err) {
-      console.log(err);
-    }
-  },
+ let itineraryEncontrado = await Itinerary.findById(id)
+  
+ res.status(200).json({itineraryEncontrado: itineraryEncontrado})
+
+}catch(err){
+res.status(500).json({message: err.message})
 }
-  module.exports = itinerariesControllers;
+
+
+
+}
+
+const addItinerary = async (req, res) => {
+try {
+        let  payload = req.body
+  
+       let itineraryCreado = await  Itinerary.create(payload)
+  
+      res.status(201).json({
+     "message": "itinerary has been added",
+     "itinerary": itineraryCreado
+      })
+  }catch(err){
+     res.status(500).json({message: err.message})
+  }
+  
+  }
+
+//method
+
+const deleteItinerary = async (req, res) => {
+ let {id} = req.params  
+ try {
+    
+    let itineraryOne = await Itinerary.deleteOne({_id:id})
+ if (itineraryOne){
+    res.status(201).json({
+  "message": "itinerary has been delete",
+   })
+ }else{
+  res.status(404).json({message:id})
+ }
+ 
+}catch(err){
+  res.status(500).json({message: err.message})
+}
+ 
+}
+
+const updateItinerary = async (req, res) => {
+
+  try {
+       let {id} = req.params  
+    const updateItinerary =  await Itinerary.findByIdAndUpdate(id, {$set : req.body})
+    res.status(201).json({
+   message: "itinerary has been updated",
+   updateItinerary })
+ 
+  }catch(err){
+  res.status(500).json({message:"There was an error updating"});
+}
+  
+}
+
+
+module.exports = {
+  getItineraries,
+   getItinerary,
+   addItinerary,
+   deleteItinerary,
+  updateItinerary
+  } 
