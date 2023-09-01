@@ -12,6 +12,7 @@ router.post("/city",verifyDataCity,addCity)
 router.delete("/city/:id",deleteCity)
 router.patch("/city/:id",verifyDataCity,updateCity)
 
+
 //itinerary
 router.route('/itinerary')
 router.get("/itineraries", getItineraries)

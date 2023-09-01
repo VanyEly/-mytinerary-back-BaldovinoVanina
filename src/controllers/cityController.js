@@ -82,14 +82,14 @@ const updateCity = async (req, res) => {
    }catch(err){
    res.status(500).json({message:"There was an error updating"});
  }
-   
- }
 
+
+}
 
 module.exports = {
    getCities,
     getCity,
     addCity,
     deleteCity,
-   updateCity
+   updateCity,
    } 
