@@ -15,8 +15,8 @@ const itinerarySchema = new mongoose.Schema({
             idUsuario:{ type:mongoose.Types.ObjectId, ref:'usuario' }
         }
     ],
-    ciudadRelacionada: { type:mongoose.Types.ObjectId, ref:'Ciudad' },
-    idGuia : { type:mongoose.Types.ObjectId, ref:'usuario' }
+    _city: { type:mongoose.Types.ObjectId, ref:'city' },
+   
 });
 
 const Itinerary = mongoose.model("itinerary", itinerarySchema);

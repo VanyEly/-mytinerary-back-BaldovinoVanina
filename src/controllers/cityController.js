@@ -83,7 +83,6 @@ const updateCity = async (req, res) => {
    res.status(500).json({message:"There was an error updating"});
  }
 
-
 }
 
 module.exports = {

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {getCities,getCity,addCity,deleteCity, updateCity} = require('../controllers/cityController');
 const { verifyDataCity } = require('../middlewares/verifications');
-const { getItineraries, getItinerary, addItinerary, deleteItinerary, updateItinerary } = require('../controllers/itineraryController')
+const { getItineraries, getItinerariesByCity, addItinerary, getItinerary, updateItinerary, deleteItinerary } = require('../controllers/itineraryController');
 
 
 //cities
@@ -13,14 +13,14 @@ router.delete("/city/:id",deleteCity)
 router.patch("/city/:id",verifyDataCity,updateCity)
 
 
-//itinerary
-router.route('/itinerary')
-router.get("/itineraries", getItineraries)
-router.get("/itinerary/:id", getItinerary)
-router.post("/itinerary",addItinerary)
-router.delete("/itinerary/:id",deleteItinerary)
-router.patch("/itinerary/:id",updateItinerary)
 
+//itinerary
+router.get("/itineraries", getItineraries)
+router.get("/itineraries/:id", getItinerariesByCity)
+router.post("/itinerary/:id", addItinerary)
+router.get("/itinerary/:id", getItinerary)
+router.put("/itinerary/:id", updateItinerary)
+router.delete("/itinerary", deleteItinerary)
 
 
 module.exports = router

@@ -1,97 +1,175 @@
-const Itinerary = require("../models/Itinerary");
+const City = require('../models/City.js')
+const Itinerary =require('../models/Itinerary.js')
 
 
- 
-const getItineraries = async (req, res) => {
+const addItinerary = async (req, res ) =>{
+    try {
+        let {id} =req.params
+        let cityFound = await City.findById(id)
 
+         let itineraryInfo = req.body
+            let newItinerary = await Itinerary.create({...itineraryInfo, _city:cityFound})
+      /*   let newItinerary = await itinerary.create({
 
-  try {
-    // console.log("ejecute la linea city");
-       let itineraries = await   Itinerary.find()     
-        res.status(200).json(
-         {itineraries}
-        )
-  } catch (error) {
-     res.status(500).json({message: "the itineraries could not be found"})
-  }
+            name: "The light city at night",
+            userName: "Lina Deron",
+            userImage: "req.body.userImage",
+            price: 10,
+            duration: "3",
+            likes:["lina","joseph","ruth"],
+            hashtags: ["travel","paris", "eiffel"],
+            city: cityFound
+        }) */
+        
+        await cityFound.updateOne({ _itineraries:[...cityFound._itineraries, newItinerary]})
 
-  }
+        const cityFoundUpdated = await City.findById(id).populate("_itineraries")
+       
 
-const getItinerary = async (req, res) => {
-
-const {id} = req.params
-try {
-  let  {id} = req.params
-
- let itineraryEncontrado = await Itinerary.findById(id)
-  
- res.status(200).json({itineraryEncontrado: itineraryEncontrado})
-
-}catch(err){
-res.status(500).json({message: err.message})
+        
+        
+            res.status(200).json({
+                message: "added itinerary to city",
+                itinerary: cityFoundUpdated
+        })
+        
+    } 
+    catch (error) {
+        res.status(500).json({message: error.message})
+    }
 }
 
+/* Get all the itineraries on the collection*/
 
-
-}
-
-const addItinerary = async (req, res) => {
-try {
-        let  payload = req.body
-  
-       let itineraryCreado = await  Itinerary.create(payload)
-  
-      res.status(201).json({
-     "message": "itinerary has been added",
-     "itinerary": itineraryCreado
-      })
-  }catch(err){
-     res.status(500).json({message: err.message})
-  }
-  
-  }
-
-//method
-
-const deleteItinerary = async (req, res) => {
- let {id} = req.params  
- try {
+const getItineraries = async (req, res) =>{
+   
+   try {
+       let itineraries =  await Itinerary.find().populate('_city')
     
-    let itineraryOne = await Itinerary.deleteOne({_id:id})
- if (itineraryOne){
-    res.status(201).json({
-  "message": "itinerary has been delete",
-   })
- }else{
-  res.status(404).json({message:id})
+            res.status(200).json(
+            {itineraries}
+      )
+    
+   } catch (error) {
+            res.status(500).json({message: error.message})
+   }
+   
+}
+
+/* Get one itinerary by Id controller using queries */
+const getItinerary = async (req, res) =>{
+   try {
+
+        let {id}= req.params
+        let itineraryFound =  await Itinerary.findById(id)
+    
+      res.status(200).json(
+            {
+                "message": "itinerary found",
+                "Itinerary": itineraryFound
+            }
+      )
+   
+   } catch (error) {
+            res.status(500).json({message: error.message})
+   }
+   
+}
+
+/* Get one itinerary by Id controller using queries */
+const getItinerariesByCity = async (req, res) =>{
+   try {
+
+        let {id}= req.params
+     
+        
+            
+            let itinerariesFound =  await Itinerary.find({_city:id})
+            
+            if(itinerariesFound.length == 0){
+              return  res.status(404).json(
+                  {
+                      "message": "itinerary not found",
+                      
+                  })
+                  
+        
+        } 
+         return res.status(200).json(
+              {
+                  "message": "itinerary found",
+                  "Itinerary": itinerariesFound
+              })
+      
+   
+   } catch (error) {
+            res.status(500).json({message: error.message})
+   }
+   
+}
+
+
+
+
+/* Update info on an itinerary using req body controller */
+const updateItinerary = async (req, res) =>{
+   try {
+        let updateData = {
+            name: req.body.name,
+           
+            nameImg: req.body.nameImg,
+            price: req.body.price,
+            duration: req.body.duration,
+            likes: req.body.likes,
+            hastags: req.body.hastags,
+        }
+
+        let {id}= req.params /* using params to find the object to update */
+       let itineraryToUpdate =  await Itinerary.findByIdAndUpdate({_id: id}, updateData)
+    
+      res.status(200).json(
+            {
+                "message": "itinerary updated",
+                "city": itineraryToUpdate
+            }
+      )
+    
+   } catch (error) {
+            res.status(500).json({message: error.message})
+   }
+   
+}
+
+/* Delete one itinerary  using ID query controller */
+const deleteItinerary = async (req, res) =>{
+    try {
+        
+         let {id}= req.query
+        let itineraryToDelete =  await Itinerary.deleteOne({_id: id})
+     
+       res.status(200).json(
+             {
+                 "message": "itineray removed",
+                 "city": itineraryToDelete
+             }
+       )
+     
+    } catch (error) {
+             res.status(500).json({message: error.message})
+    }
+    
  }
- 
-}catch(err){
-  res.status(500).json({message: err.message})
-}
- 
-}
-
-const updateItinerary = async (req, res) => {
-
-  try {
-       let {id} = req.params  
-    const updateItinerary =  await Itinerary.findByIdAndUpdate(id, {$set : req.body})
-    res.status(201).json({
-   message: "itinerary has been updated",
-   updateItinerary })
- 
-  }catch(err){
-  res.status(500).json({message:"There was an error updating"});
-}
-  
-}
 
 
-module.exports = {
-  getItineraries,
-   getItinerary,
+
+
+
+
+
+
+module.exports = {getItineraries, 
+  getItinerary,
    addItinerary,
-   deleteItinerary,
-  updateItinerary
-  } 
+    updateItinerary,
+     deleteItinerary,
+     getItinerariesByCity}

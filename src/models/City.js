@@ -1,5 +1,5 @@
+const mongoose = require('mongoose');
 const { Schema, model } = require ('mongoose')
-
 
 const schemaCity = new Schema({
     
@@ -18,7 +18,16 @@ const schemaCity = new Schema({
     description : {
         type: 'string',
         default : 'Beautiful City'
-    }
+    },
+    
+ _itineraries:{ type:mongoose.Types.ObjectId, ref:'Itinerary' },
+ 
+    
+
+ urlimage:{
+    type: String,
+    required: true
+ }
 })
 
 
