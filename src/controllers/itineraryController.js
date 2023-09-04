@@ -4,8 +4,8 @@ const Itinerary =require('../models/Itinerary.js')
 
 const addItinerary = async (req, res ) =>{
     try {
-        let {id} =req.params
-        let cityFound = await City.findById(id)
+        let {id} =req.body
+        let cityFound = await City.find()
 
          let itineraryInfo = req.body
             let newItinerary = await Itinerary.create({...itineraryInfo, _city:cityFound})
