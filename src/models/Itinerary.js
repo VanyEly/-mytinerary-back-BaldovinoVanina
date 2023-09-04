@@ -15,7 +15,7 @@ const itinerarySchema = new mongoose.Schema({
             idUsuario:{ type:mongoose.Types.ObjectId, ref:'usuario' }
         }
     ],
-    _city: { type:mongoose.Types.ObjectId, ref:'city' },
+    _city: { type:mongoose.Types.ObjectId, ref:'City' },
    
 });
 
