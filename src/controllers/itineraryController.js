@@ -58,22 +58,18 @@ const getItineraries = async (req, res) =>{
 
 /* Get one itinerary by Id controller using queries */
 const getItinerary = async (req, res) =>{
-   try {
-
-        let {id}= req.params
-        let itineraryFound =  await Itinerary.findById(id)
-    
-      res.status(200).json(
-            {
-                "message": "itinerary found",
-                "Itinerary": itineraryFound
-            }
-      )
-   
-   } catch (error) {
-            res.status(500).json({message: error.message})
-   }
-   
+    try {
+        let { id } = req.params;
+        const itineraryFound = await Itinerary.findById(id);
+        res.status(201).json({
+          message: "Itinerary found",
+          Itinerary: itineraryFound,
+        });
+      } catch (err) {
+        res.status(500).json({
+          message: "Itinerary could not been found",
+        });
+      }
 }
 
 /* Get one itinerary by Id controller using queries */
