@@ -19,7 +19,7 @@ const getCity = async (req, res) => {
 
 const {id} = req.params
 try {
-   let  {id} = req.params
+   let {id} = req.params
 
   let cityEncontrado = await City.findById(id)
    
@@ -28,9 +28,6 @@ try {
 }catch(err){
 res.status(500).json({message: err.message})
 }
-
-
-
 }
 
 const addCity = async (req, res) => {
