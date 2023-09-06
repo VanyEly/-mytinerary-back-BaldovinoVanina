@@ -22,5 +22,6 @@ router.get("/itinerary/:id", getItinerary)
 router.put("/itinerary/:id", updateItinerary)
 router.delete("/itinerary", deleteItinerary)
 
+router.use("/user", authRouter)
 
 module.exports = router
