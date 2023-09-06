@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const User = require("../models/User")
 const { verifyPassword } = require("../middlewares/auth")
 
 const register = async (req,res) => {

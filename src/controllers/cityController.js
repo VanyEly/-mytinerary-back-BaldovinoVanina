@@ -87,21 +87,7 @@ const updateCity = async (req, res) => {
 
 }
 
-const searchCity = async (req, res) => {
-   try {
-     let queries = {};
-     if (req.query.name) {
-       queries.name = new RegExp('^'+ req.query.name, 'i');
-     }
-     const cities = await City.find(queries);
-     res.status(201).json({
-       message: "Cities found",
-       cities: cities
-     });
-   } catch (err) {
-     res.json({ message: "The cities could not been found"})
-   }
- };
+
 
 module.exports = {
    getCities,
@@ -109,5 +95,5 @@ module.exports = {
     addCity,
     deleteCity,
    updateCity,
-   searchCity
+   
    } 

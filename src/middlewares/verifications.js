@@ -1,13 +1,13 @@
 const Joi = require('joi');
 
-const userShema = Joi.object({
-    name: Joi.string().alphanum().min(5).max(20).require(),
+const schemaUser = Joi.object({
+    name: Joi.string().alphanum().min(5).max(20).required(),
 
 
-    lastname: Joi.string().alphanum().min(5).max(20).require(),
+    lastname: Joi.string().alphanum().min(5).max(20).required(),
     
 
-    email: Joi.string().email().min(10).max(20).require().message({
+    email: Joi.string().email().min(10).max(20).required().messages({
         'string.email': "Please enter an valid email",
         'string.min': "email must be at least 10 characters",
         'string.max': "email must be at most 20 characters",
@@ -16,13 +16,13 @@ const userShema = Joi.object({
     }), 
 
 
-    password: Joi.string().alphanum().min(6).max(20).require(), 
+    password: Joi.string().alphanum().min(6).max(20).required(), 
 
 
-    photo: Joi.string().uri().any(),
+    photo: Joi.string().uri(),
 
 
-    country: Joi.string().min(10).max(20).require(),
+    country: Joi.string().min(5).max(20).required(),
 
 
   
@@ -57,7 +57,7 @@ next()
 
 const verifyAuthData = (req, res, next) => {
   const payload = req.body;
-  const userValidated = userShema.validate(payload);
+  const userValidated = schemaUser.validate(payload);
 
   if(userValidated.error){
     return res.status(400).json({message: userValidated.error.details.map((err) => err.message)})
