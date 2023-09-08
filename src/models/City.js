@@ -20,14 +20,9 @@ const schemaCity = new Schema({
         default : 'Beautiful City'
     },
     
- _itineraries:{ type:mongoose.Types.ObjectId, ref:'Itinerary' },
+ _itineraries:[{ type:mongoose.Types.ObjectId, ref:'itinerary' }],
  
-    
 
- urlimage:{
-    type: String,
-    required: true
- }
 })
 
 

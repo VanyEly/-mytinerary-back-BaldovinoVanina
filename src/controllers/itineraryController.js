@@ -3,24 +3,15 @@ const Itinerary =require('../models/Itinerary.js')
 
 
 const addItinerary = async (req, res ) =>{
+   console.log("estoy aca");
     try {
-        let {id} =req.body
-        let cityFound = await City.find()
+        let {id} =req.params
+        console.log(id);
+        let cityFound = await City.findById(id)
 
          let itineraryInfo = req.body
             let newItinerary = await Itinerary.create({...itineraryInfo, _city:cityFound})
-      /*   let newItinerary = await itinerary.create({
-
-            name: "The light city at night",
-            userName: "Lina Deron",
-            userImage: "req.body.userImage",
-            price: 10,
-            duration: "3",
-            likes:["lina","joseph","ruth"],
-            hashtags: ["travel","paris", "eiffel"],
-            city: cityFound
-        }) */
-        
+    
         await cityFound.updateOne({ _itineraries:[...cityFound._itineraries, newItinerary]})
 
         const cityFoundUpdated = await City.findById(id).populate("_itineraries")
@@ -42,7 +33,7 @@ const addItinerary = async (req, res ) =>{
 /* Get all the itineraries on the collection*/
 
 const getItineraries = async (req, res) =>{
-   
+   console.log("itineraries");
    try {
        let itineraries =  await Itinerary.find().populate('_city')
     

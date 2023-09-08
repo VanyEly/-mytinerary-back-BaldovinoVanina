@@ -4,8 +4,12 @@ const getCities = async (req, res) => {
 
 
    try {
-     // console.log("ejecute la linea city");
-        let cities = await   City.find()     
+      let search = {}
+      if(req.query.name){
+      search.name = {$regex: new RegExp("^" + req.query.name,"i")
+      }}
+   // console.log("ejecute la linea city");	
+        let cities = await   City.find(search).populate("_itineraries")     
          res.status(200).json(
           {cities}
          )

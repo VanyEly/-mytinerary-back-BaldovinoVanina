@@ -18,7 +18,7 @@ router.patch("/city/:id",verifyDataCity,updateCity)
 //itinerary
 router.get("/itineraries", getItineraries)
 router.get("/itineraries/:id", getItinerariesByCity)
-router.post("/itinerary", addItinerary)
+router.post("/itinerary/:id", addItinerary)
 router.get("/itinerary/:id", getItinerary)
 router.put("/itinerary/:id", updateItinerary)
 router.delete("/itinerary", deleteItinerary)
