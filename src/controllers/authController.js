@@ -23,22 +23,16 @@ try {
 
 const login =(req, res) => {
    try {
-    const {name,lastname,password,email,photo,country} = req.body
-
-    const userFounded = User.findOne({email: email})
-
-    if (userFounded){
-
-      if(verifyPassword(password, userFounded.password)){
-       return res.status(200).json({message: "successfull logged in", userFounded: userFounded});
-      }else{
-        return res.status(400).json({message: "wrong password"});
-      }
-
-    }else{
-        res.status(400).json({message:e.message});
+   res.status(200).json({
+    message:"Successfully logged in",
+    token: req.token,
+    user:{
+    user: req.user.email,
+    _id: req.user._id
     }
-   } catch (e) {
+})
+   }
+    catch (e) {
     res.status(400).json({message:e.message});
    }
 

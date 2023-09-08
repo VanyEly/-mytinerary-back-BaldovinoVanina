@@ -57,7 +57,7 @@ next()
 
 const verifyAuthData = (req, res, next) => {
   const payload = req.body;
-  const userValidated = schemaUser.validate(payload);
+  const userValidated = schemaUser.validate(payload,{abortEarly:false});
 
   if(userValidated.error){
     return res.status(400).json({message: userValidated.error.details.map((err) => err.message)})
