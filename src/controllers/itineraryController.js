@@ -3,7 +3,7 @@ const Itinerary =require('../models/Itinerary.js')
 
 
 const addItinerary = async (req, res ) =>{
-   console.log("estoy aca");
+//    console.log("estoy aca");
     try {
         let {id} =req.params
         console.log(id);
