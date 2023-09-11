@@ -38,8 +38,32 @@ const login =(req, res) => {
 
 };
 
+const authenticated = async(req, res)=>{
+    try {
+        res.status(200).json({
+            message: 'Successfully Authenticated',
+            token: req.token,
+            user:{
+                email: req.user.email,
+                _id: req.user._id,
+            }
+        })
+    } catch (error) {
+        res.status(400).json({message: error.message});
+    }
+}
+
+const logout = async (req, res) => {
+    try {
+        res.status(200).json({message: 'Logged out',token: req.token})
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
 
 module.exports = {
     register,
-    login
+    login,
+    authenticated,
+    logout
 }

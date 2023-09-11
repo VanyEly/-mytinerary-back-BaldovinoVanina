@@ -1,6 +1,28 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
+const {Strategy, ExtractJwt} = require('passport-jwt');
+
+const passportVerificator = passport.use(
+    new Strategy({
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: "claveSuperSecreta"
+    },async(payload, done )=>{
+
+        try{
+        let userFounded = await User.findOne({email: payload.email})
+
+        if (userFounded){
+            return done(null, userFounded);
+        }else{
+            done(null)
+        }
+    }catch(err){
+     return done(err)
+    }
+}
+    ));
 
 const hashPassword = (req , res , next) => {
 
@@ -20,9 +42,11 @@ const hashPassword = (req , res , next) => {
 
 const verifyPassword = (req , res , next) => {
     const passwordPlain = req.body.password
-    const hashPassword = req.body.password
-const isValid = bcrypt.compareSync(passwordPlain, hashPassword);
+   
+    const hashPassword = req.user.password 
 
+const isValid = bcrypt.compareSync(passwordPlain, hashPassword);
+    
 if(isValid) {
     next()
 }else{
@@ -33,13 +57,13 @@ if(isValid) {
 }
 
 const verifyUserExists = async  (req, res , next) => {
-    const {name,lastname,password,email,photo,country} = req.body
+    const {email} = req.body
 
     const userFounded = await User.findOne({email: email})
 
     if (userFounded){
-
-       next()
+       req.user = userFounded;
+       next();
       
     }else{
         res.status(400).json({message:"user not founded"});
@@ -68,5 +92,6 @@ module.exports = {
     hashPassword,
     verifyPassword, 
     verifyUserExists,
-    generateToken
+    generateToken,
+    passportVerificator
 }
