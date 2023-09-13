@@ -5,6 +5,7 @@ const register = async (req,res) => {
 
 try {
     const payload = req.body
+    console.log(payload);
     const userExists = await User.findOne({email: payload.email})
 
     if (userExists) {

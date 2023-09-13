@@ -6,7 +6,7 @@ const schemaUser = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   photo: { type: String },
-  country: {type: String, required: true },
+  country: {type: String},
 
 });
 

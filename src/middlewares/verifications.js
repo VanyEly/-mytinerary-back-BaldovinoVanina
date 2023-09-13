@@ -22,7 +22,7 @@ const schemaUser = Joi.object({
     photo: Joi.string().uri(),
 
 
-    country: Joi.string().min(5).max(20).required(),
+    country: Joi.string().min(5).max(20),
 
 
   
